@@ -7,7 +7,7 @@ function! s:tdout(job, lines, event) abort
 		let lines = map(a:lines[:-2], 'str2nr(v:val)')
 		if !empty(lines)
 			let @/ = '\v^%('.join(map(lines, {_,lnum-> '%'.lnum.'l'}), '|').')'
-			execute printf('normal! %dGNn', s:origlnum)
+			execute printf('silent! normal! %dGNn', s:origlnum)
 		else
 			let @/ = ''
 			nohlsearch
@@ -33,7 +33,7 @@ function! s:earch(pattern, final) abort
 
 		if empty(s:pattern)
 			let s:origlnum = line('.')
-			let s:lines = map(getline(1, '$'), {idx, line-> (idx + 1)."\t".line})
+			let s:lines = map(getline(1, '$'), {idx,line-> (idx + 1)."\t".line})
 		endif
 
 		let s:pattern = a:pattern
