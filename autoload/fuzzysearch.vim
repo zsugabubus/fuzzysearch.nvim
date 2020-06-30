@@ -5,18 +5,14 @@ let s:job = -1
 function! s:tdout(job, lines, event) abort
 	try
 		let lines = map(a:lines[:-2], 'str2nr(v:val)')
-		if !empty(lines)
-			let @/ = '\v^%('.join(map(lines, {_,lnum-> '%'.lnum.'l'}), '|').')'
-			execute printf('silent! normal! %dGNn', s:origlnum)
-		else
-			let @/ = ''
-			nohlsearch
-		endif
+		let @/ = empty(lines) ? '' : '\v^%('.join(map(lines, {_,lnum-> '%'.lnum.'l'}), '|').')'
+		execute printf('silent! normal! %dGNn', s:origlnum)
+		redraw!
 	catch
 		let @/ = ''
 		nohlsearch
+		redraw!
 	endtry
-	redraw!
 endfunction
 
 function! s:top(job, exitcode, event) abort
